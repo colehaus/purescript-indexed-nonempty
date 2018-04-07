@@ -1,0 +1,21 @@
+{
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/colehaus/purescript-indexed-nonempty.git"
+  },
+  "name": "purescript-indexed-nonempty",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "dependencies": {
+    "purescript-generics": "^4.0.0",
+    "purescript-prelude": "^3.2.0"
+  },
+  "devDependencies": {
+    "purescript-psci-support": "^3.0.0"
+  }
+}
