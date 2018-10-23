@@ -7,7 +7,8 @@ import Data.Foldable (class Foldable, foldMap, foldl, foldr)
 import Data.FoldableWithIndex
   (class FoldableWithIndex, foldMapWithIndex, foldlWithIndex, foldrWithIndex)
 import Data.FunctorWithIndex (class FunctorWithIndex, mapWithIndex)
-import Data.Generic (class Generic, gShow)
+import Data.Generic.Rep (class Generic)
+import Data.Generic.Rep.Show (genericShow)
 import Data.Maybe (Maybe)
 import Data.NonEmpty as UnIndexed
 import Data.Ord (class Ord1, compare1)
@@ -86,14 +87,12 @@ foldMapWithIndex1 ::
 foldMapWithIndex1 f ((Tuple k v) :| fkv) =
   foldlWithIndex (\i s a -> s <> f i a) (f k v) fkv
 
-derive instance genericNonEmpty ::
-  (Generic (f k v), Generic k, Generic v) =>
-  Generic (NonEmpty f k v)
+derive instance genericNonEmpty :: Generic (NonEmpty f k v) _
 
 instance showNonEmpty ::
-  (Generic (f k v), Generic k, Generic v) =>
+  (Show (f k v), Show k, Show v) =>
   Show (NonEmpty f k v) where
-  show = gShow
+  show = genericShow
 
 derive instance eqNonEmpty :: (Eq k, Eq v, Eq (f k v)) => Eq (NonEmpty f k v)
 instance eq1NonEmpty :: (Eq k, Eq1 (f k)) => Eq1 (NonEmpty f k) where

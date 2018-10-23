@@ -12,10 +12,10 @@
     "output"
   ],
   "dependencies": {
-    "purescript-generics": "^4.0.0",
-    "purescript-prelude": "^3.2.0"
+    "purescript-generics-rep": "^6.1.0",
+    "purescript-prelude": "^4.1.0"
   },
   "devDependencies": {
-    "purescript-psci-support": "^3.0.0"
+    "purescript-psci-support": "^4.0.0"
   }
 }
