@@ -3,19 +3,17 @@ module Data.NonEmpty.Indexed where
 import Prelude
 
 import Data.Eq (class Eq1, eq1)
-import Data.Foldable (class Foldable, foldMap, foldl, foldr)
-import Data.FoldableWithIndex
-  (class FoldableWithIndex, foldMapWithIndex, foldlWithIndex, foldrWithIndex)
+import Data.Foldable (class Foldable, foldMapDefaultL, foldl, foldr)
+import Data.FoldableWithIndex (class FoldableWithIndex, foldMapWithIndex, foldlWithIndex, foldrWithIndex)
 import Data.FunctorWithIndex (class FunctorWithIndex, mapWithIndex)
 import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Show (genericShow)
 import Data.Maybe (Maybe)
 import Data.NonEmpty as UnIndexed
 import Data.Ord (class Ord1, compare1)
-import Data.Semigroup.Foldable (class Foldable1, fold1Default)
+import Data.Semigroup.Foldable (class Foldable1, foldl1Default, foldr1Default)
+import Data.Show.Generic (genericShow)
 import Data.Traversable (class Traversable, traverse, sequence)
-import Data.TraversableWithIndex
-  (class TraversableWithIndex, traverseWithIndex)
+import Data.TraversableWithIndex (class TraversableWithIndex, traverseWithIndex)
 import Data.Tuple (Tuple(..), uncurry)
 
 
@@ -113,7 +111,7 @@ instance functorWithIndexNonEmpty ::
   mapWithIndex f (Tuple k v :| fkv) = Tuple k (f k v) :| mapWithIndex f fkv
 
 instance foldableNonEmpty :: (Foldable (f k)) => Foldable (NonEmpty f k) where
-  foldMap f (Tuple k v :| fkv) = f v <> foldMap f fkv
+  foldMap f (Tuple _ v :| fkv) = f v <> foldMapDefaultL f fkv
   foldl f acc (Tuple _ v :| fkv) = foldl f (f acc v) fkv
   foldr f acc (Tuple _ v :| fkv) = f v (foldr f acc fkv)
 instance foldableWithIndexNonEmpty ::
@@ -123,7 +121,8 @@ instance foldableWithIndexNonEmpty ::
   foldlWithIndex f acc (Tuple k v :| fkv) = foldlWithIndex f (f k acc v) fkv
   foldrWithIndex f acc (Tuple k v :| fkv) = f k v (foldrWithIndex f acc fkv)
 instance foldable1NonEmpty :: Foldable (f k) => Foldable1 (NonEmpty f k) where
-  fold1 = fold1Default
+  foldr1 = foldr1Default
+  foldl1 = foldl1Default
   foldMap1 f (Tuple _ v0 :| fkv) = foldl (\acc v -> acc <> f v) (f v0) fkv
 
 instance traversableNonEmpty ::
