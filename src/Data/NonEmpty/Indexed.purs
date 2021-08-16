@@ -10,7 +10,7 @@ import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe)
 import Data.NonEmpty as UnIndexed
 import Data.Ord (class Ord1, compare1)
-import Data.Semigroup.Foldable (class Foldable1, foldr1)
+import Data.Semigroup.Foldable (class Foldable1, foldl1Default, foldr1Default)
 import Data.Show.Generic (genericShow)
 import Data.Traversable (class Traversable, traverse, sequence)
 import Data.TraversableWithIndex (class TraversableWithIndex, traverseWithIndex)
@@ -121,8 +121,8 @@ instance foldableWithIndexNonEmpty ::
   foldlWithIndex f acc (Tuple k v :| fkv) = foldlWithIndex f (f k acc v) fkv
   foldrWithIndex f acc (Tuple k v :| fkv) = f k v (foldrWithIndex f acc fkv)
 instance foldable1NonEmpty :: Foldable (f k) => Foldable1 (NonEmpty f k) where
-  foldr1 = foldr1
-  foldl1 = foldl1
+  foldr1 = foldr1Default
+  foldl1 = foldl1Default
   foldMap1 f (Tuple _ v0 :| fkv) = foldl (\acc v -> acc <> f v) (f v0) fkv
 
 instance traversableNonEmpty ::
